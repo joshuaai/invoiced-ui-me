@@ -3,10 +3,22 @@ import 'purecss/build/pure.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { BrowserRouter } from 'react-router-dom';
+import c from './components';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import routes from './routes';
+const Root = () => {
+  return (
+    <div>
+      <Router>
+        <Switch>
+          <Route path='/' component={c.Layout} />
+          <Route path='/contact' component={c.Collection} />
+        </Switch>
+      </Router>
+    </div>
+  )
+}
 
 ReactDOM.render(
-  <BrowserRouter>{routes}</BrowserRouter>,  document.getElementById('root')
+  <Root />,  document.getElementById('root')
 );

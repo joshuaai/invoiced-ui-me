@@ -144,6 +144,6 @@ Add the package:
 npm install --save react-router-dom
 ```
 
-We'll use the `<Route />` component to create a route available at a specific location available at a url. The `<Route />` component is mounted at page URLs that match a particular route set up in the route's configuration `props`.
+Create a `src/routes.js` file to manage the routes:
+```
 
- 
