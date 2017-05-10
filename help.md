@@ -144,6 +144,35 @@ Add the package:
 npm install --save react-router-dom
 ```
 
-Create a `src/routes.js` file to manage the routes:
+In the `src/index.js` file to manage the routes, refactor thus:
+```js
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+const Root = () => {
+  return (
+    <div>
+      <Switch>
+        <Route exact path='/' component={Layout} />
+        <Switch>
+          <Route exact path='/contacts' component={Collection} />
+          <Route path='/contacts/:contactId' component={Show} />
+        </Switch>
+      </Switch>
+    </div>
+  )
+}
+
+ReactDOM.render(
+  <Router><Root /></Router>,  document.getElementById('root')
+);
 ```
 
+### State Management with MobX
+Create a stores folder and the accompanying files:
+```bash
+mkdir src/stores
+
+touch src/stores/index.js
+
+touch src/stores/Contacts.js
+```

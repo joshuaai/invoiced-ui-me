@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Nav from './Nav';
 import Contact from './Contact';
 import data from './data';
 
@@ -20,8 +21,8 @@ class Collection extends React.Component {
 
     this.setState({
       contacts: contacts.concat({ id: newId,
-                                   name: this.refs.name.value,
-                                   email: this.refs.email.value }),
+                                  name: this.refs.name.value,
+                                  email: this.refs.email.value }),
     });
 
     this.refs.name.value = null;
@@ -47,6 +48,7 @@ class Collection extends React.Component {
   render() {
     return (
       <div id='Collection'>
+        <Nav />
         {this.newContact()}
         <div className='pure-g'>
           {this.state.contacts.map(info =>

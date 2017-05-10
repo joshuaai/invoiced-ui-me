@@ -3,22 +3,26 @@ import 'purecss/build/pure.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import c from './components';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Layout from './components/Layout';
+import Collection from './components/Collection';
+import Show from './components/Show'
+
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 const Root = () => {
   return (
     <div>
-      <Router>
+      <Switch>
+        <Route exact path='/' component={Layout} />
         <Switch>
-          <Route path='/' component={c.Layout} />
-          <Route path='/contact' component={c.Collection} />
+          <Route exact path='/contacts' component={Collection} />
+          <Route path='/contacts/:contactId' component={Show} />
         </Switch>
-      </Router>
+      </Switch>
     </div>
   )
 }
 
 ReactDOM.render(
-  <Root />,  document.getElementById('root')
+  <Router><Root /></Router>,  document.getElementById('root')
 );

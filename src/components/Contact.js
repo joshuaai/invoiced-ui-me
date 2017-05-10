@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const Contact = props =>
   <div className='pure-u-1-3'>

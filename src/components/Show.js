@@ -5,7 +5,7 @@ import data from './data';
 class Show extends React.Component {
   componentWillMount() {
     this.setState({
-      contact: data.filter(c => c.id === parseInt(this.props.params.contactId, 10))[0],
+      contact: data.filter(c => c.id === parseInt(this.props.match.params.contactId, 10))[0],
     });
   }
 
