@@ -3,7 +3,7 @@ import { observable, action } from 'mobx';
 import Api from './Helpers';
 
 class Contacts {
-  path = '/products'
+  path = '/products';
   @observable all = [];
   @observable isLoading = false;
 
@@ -34,11 +34,15 @@ class Contacts {
     );
   }
 
-  @action remove(contactId) {
-    const existing = this.all;
-    this.all = existing.filter(
-      c => c.id !== contactId
-    );
+  @action async remove(contactId) {
+    this.isLoading = true;
+    const response = await Api.delete(`${this.path}/${contactId}`);
+    const status = await response.status;
+
+    if (status === 200) {
+      this.isLoading = false;
+      this.fetchAll();
+    }
   }
 }
 
