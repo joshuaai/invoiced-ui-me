@@ -9,6 +9,10 @@ import Show from './components/Show'
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
+import { Provider } from 'mobx-react';
+
+import stores from './stores'
+
 const Root = () => {
   return (
     <div>
@@ -24,5 +28,8 @@ const Root = () => {
 }
 
 ReactDOM.render(
-  <Router><Root /></Router>,  document.getElementById('root')
+  <Provider contacts={stores.contacts}>
+    <Router><Root /></Router>
+  </Provider>, 
+  document.getElementById('root')
 );

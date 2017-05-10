@@ -1,15 +1,16 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 
 import Nav from './Nav';
 import Contact from './Contact';
-import data from './data';
 
 import './Collection.css';
 
+@observer(['contacts'])
 class Collection extends React.Component {
   componentWillMount() {
     this.setState({
-      contacts: data,
+      contacts: this.props.contacts.all,
     });
   }
 
@@ -51,7 +52,7 @@ class Collection extends React.Component {
         <Nav />
         {this.newContact()}
         <div className='pure-g'>
-          {this.state.contacts.map(info =>
+          {this.props.contacts.all.slice().map(info =>
             <Contact key={info.id} {...info} />
           )}
         </div>

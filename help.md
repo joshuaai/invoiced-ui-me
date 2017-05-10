@@ -167,7 +167,7 @@ ReactDOM.render(
 );
 ```
 
-### State Management with MobX
+## State Management with MobX
 Create a stores folder and the accompanying files:
 ```bash
 mkdir src/stores
@@ -175,4 +175,147 @@ mkdir src/stores
 touch src/stores/index.js
 
 touch src/stores/Contacts.js
+```
+
+Install MobX and MobX react bindings:
+```bash
+npm install mobx mobx-react --save
+```
+
+### Store
+
+Now we setup the store. In `Contacts.js`, add:
+```js
+import { observable } from 'mobx';
+
+class Contacts {
+  @observable all = [
+    { id: 1, name: 'Josh I', email: 'josh@mail.com' },
+    { id: 2, name: 'David O', email: 'david@mail.com' },
+    { id: 3, name: 'Andrew N', email: 'vlad@mail.com' },
+  ];
+}
+
+export default new Contacts();
+```
+
+In the `stores/index.js` file, add:
+```js
+import contacts from './Contacts';
+
+const stores = {
+  contacts,
+};
+
+export default stores;
+```
+
+For VS Code `experimentalDecorator` support, an tsconfig.json file and to it add:
+```json
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "allowJs": true
+    }
+}
+```
+
+The decorators error affects webpack from starting, so add a plugin:
+```js
+npm install babel-plugin-transform-decorators-legacy --save-dev
+```
+
+In the webpack config file or in `node_modules/react-scripts/config/webpack.config.dev.js` if using create-react-app, add to the babel loader query
+```js
+// Process JS with Babel.
+{
+  test: /\.(js|jsx)$/,
+  include: paths.appSrc,
+  loader: 'babel',
+  query: {
+    // @remove-on-eject-begin
+    babelrc: false,
+    presets: [require.resolve('babel-preset-react-app')],
+    // @remove-on-eject-end
+    // This is a feature of `babel-loader` for webpack (not Babel itself).
+    // It enables caching results in ./node_modules/.cache/babel-loader/
+    // directory for faster rebuilds.
+    cacheDirectory: true,
+    plugins: ['transform-decorators-legacy']
+  }
+},
+```
+Only the `cacheDirectory` part is changed.
+
+And to the `webpack.config.prod.js` in the same folder:
+```js
+// Process JS with Babel.
+{
+  test: /\.(js|jsx)$/,
+  include: paths.appSrc,
+  loader: 'babel',
+  // @remove-on-eject-begin
+  query: {
+    babelrc: false,
+    presets: [require.resolve('babel-preset-react-app')],
+    plugins: ['transform-decorators-legacy']
+  },
+  // @remove-on-eject-end
+},
+```
+Only the `plugins` part is added/changed.
+
+In the base `src/index.js` file, add after the `router` imports:
+```js
+//....
+import stores from './stores'
+//....
+```
+
+### Provider
+The provider is what will inject the object of the store into the component.
+
+In the `src/index.js`, add:
+```js
+//just above the stores import
+import { Provider } from 'mobx-react';
+
+//wrap the router inside the provider
+ReactDOM.render(
+  <Provider contacts={stores.contacts}>
+    <Router><Root /></Router>
+  </Provider>, 
+  document.getElementById('root')
+);
+```
+
+#### Using the Provider
+In the `Collection.js` file, add:
+```js
+//just after the react import
+import { observer } from 'mobx-react';
+
+//now let the collection js observe on the contacts store
+@observer(['contacts'])
+class Collection extends React.Component {
+//...
+}
+```
+
+### Rendering the contacts with MobX
+Refactor the `render()` code thus:
+```js
+render() {
+  return (
+    <div id='Collection'>
+      <Nav />
+      {this.newContact()}
+      <div className='pure-g'>
+        {this.props.contacts.all.slice().map(info =>
+          <Contact key={info.id} {...info} />
+        )}
+      </div>
+    </div>
+  );
+}
 ```
