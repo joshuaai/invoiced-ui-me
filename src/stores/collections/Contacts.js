@@ -1,12 +1,15 @@
 import { observable, action } from 'mobx';
 
+import Api from './Helpers';
+
 class Contacts {
+  path = '/products'
   @observable all = [];
   @observable isLoading = false;
 
   @action async fetchAll() {
     this.isLoading = false;
-    const response = await fetch('https://kips.herokuapp.com/products');
+    const response = await Api.get(this.path);
     const status = await response.status;
 
     if (status === 200) {
@@ -15,17 +18,7 @@ class Contacts {
   }
 
   @action async add(data) {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-
-    const options = {
-      method: 'POST',
-      headers, 
-      body: JSON.stringify(data),
-    };
-
-    const request = new Request('https://kips.herokuapp.com/products', options );
-    const response = await fetch(request);
+    const response = await Api.post(this.path, data);
     const status = await response.status;
 
     if (status === 201) {
