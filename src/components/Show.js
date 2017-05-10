@@ -4,9 +4,8 @@ import { observer } from 'mobx-react';
 @observer(['contacts'])
 class Show extends React.Component {
   componentWillMount() {
-    this.setState({
-      contact: this.props.contacts.all.filter(c => c.id === parseInt(this.props.match.params.contactId, 10))[0],
-    });
+    const contact = this.props.contacts.find(this.props.match.params.contactId);
+    this.setState({ contact });
   }
 
   render() {

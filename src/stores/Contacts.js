@@ -11,6 +11,21 @@ class Contacts {
     const existing = this.all;
     this.all = existing.concat(data)
   }
+
+  @action find(contactId) {
+    return (
+      this.all.slice().filter(
+        c => c.id === parseInt(contactId, 10)
+      )[0]
+    );
+  }
+
+  @action remove(contactId) {
+    const existing = this.all;
+    this.all = existing.filter(
+      c => c.id !== contactId
+    );
+  }
 }
 
 export default new Contacts();

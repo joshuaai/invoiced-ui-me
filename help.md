@@ -344,3 +344,75 @@ componentWillMount() {
 ```
 
 Check the Modifying MobX Store commit for the new store and `Collection.js` structure.
+
+### Retrieving Data from the MobX Store
+We need to refactor the `Show.js` component and move out all the filtering logic to the store, so the component just does the accessing of the data.
+
+First implement the action in the `Contacts.js` store:
+```js
+@action find(contactId) {
+  return (
+    this.all.slice().filter(
+      c => c.id === parseInt(contactId, 10)
+    )[0]
+  );
+}
+```
+
+Then slim down the `Show.js` component to use the `find` action:
+```js
+componentWillMount() {
+  const contact = this.props.contacts.find(this.props.match.params.contactId);
+  this.setState({ contact });
+}
+```
+
+### Removing Items from the MobX Store
+Add the remove action to the `Contacts.js` store:
+```js
+@action remove(contactId) {
+  const existing = this.all;
+  this.all = existing.filter(
+    c => c.id !== contactId
+  );
+}
+```
+
+Refactor the `Contact.js` component into a full component to handle all actions:
+```js
+import React from 'react';
+import { observer } from 'mobx-react';
+
+import './Contact.css';
+
+import { Link } from 'react-router-dom';
+
+//...
+
+@observer(['contacts'])
+class Contact extends React.Component {
+  removeContact = (e) => {
+    e.preventDefault();
+    this.props.contacts.remove(this.props.id);
+  }
+
+  render() {
+    return (
+      <div className='pure-u-1-3'>
+        <h2>
+          <Link to={`/contacts/${this.props.id}`}>
+            {this.props.name}
+          </Link>
+        </h2>
+        <p>{this.props.email}</p>
+        <a href='#' className='pure-button removeButton' onClick={this.removeContact}>Remove</a>
+      </div>
+    )
+  }
+}
+
+export default Contact
+```
+
+## Connecting to Rails API
+

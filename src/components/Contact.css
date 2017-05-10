@@ -1,0 +1,9 @@
+a {
+  text-decoration: none;
+  color: teal;
+}
+
+.removeButton {
+  background: maroon;
+  color: white;
+}
