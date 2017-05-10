@@ -303,8 +303,16 @@ class Collection extends React.Component {
 ```
 
 ### Rendering the contacts with MobX
-Refactor the `render()` code thus:
+Refactor the `componentWillMount()` and `render()` methods in `Collection.js`:
 ```js
+componentWillMount() {
+  this.setState({
+    contacts: this.props.contacts.all,
+  });
+}
+
+//....
+
 render() {
   return (
     <div id='Collection'>
@@ -319,3 +327,20 @@ render() {
   );
 }
 ```
+
+Add the observable in the `Show.js` component:
+```js
+import { observer } from 'mobx-react';
+
+@observer(['contacts'])
+class Show extends React.Component {
+componentWillMount() {
+  this.setState({
+    contact: this.props.contacts.all.filter(c => c.id === parseInt(this.props.match.params.contactId, 10))[0],
+  });
+}
+
+//.....
+```
+
+Check the Modifying MobX Store commit for the new store and `Collection.js` structure.
