@@ -8,6 +8,9 @@ import './Collection.css';
 
 @observer(['contacts'])
 class Collection extends React.Component {
+  componentWillMount() {
+    this.props.contacts.fetchAll();
+  }
 
   addContact = (e) => {
     e.preventDefault();
@@ -42,12 +45,14 @@ class Collection extends React.Component {
     </div>;
 
   render() {
+    const { all, isLoading } = this.props.contacts;
+
     return (
       <div id='Collection'>
         <Nav />
         {this.newContact()}
         <div className='pure-g'>
-          {this.props.contacts.all.slice().map(info =>
+          {all.slice().map(info =>
             <Contact key={info.id} {...info} />
           )}
         </div>

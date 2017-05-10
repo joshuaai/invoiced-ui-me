@@ -415,4 +415,21 @@ export default Contact
 ```
 
 ## Connecting to Rails API
+This is to enable saving the contacts to the database.
 
+Create a new directory called `collections` and a one called `models`. Move the `Contacts.js` store into the collections folder.
+```bash
+mkdir src/stores/collections
+mkdir src/stores/models
+
+mv src/stores/Contacts.js src/stores/collections
+```
+
+Refactor the `Contacts.js` store observable to be an empty array and add:
+```js
+@observable all = [];
+@observable isLoading = false; 
+```
+
+### Using Fetch for API Calls
+Fetch is isomorphic for asynchronous calls. 

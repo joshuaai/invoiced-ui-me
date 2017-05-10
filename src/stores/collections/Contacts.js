@@ -1,11 +1,18 @@
 import { observable, action } from 'mobx';
 
 class Contacts {
-  @observable all = [
-    { id: 1, name: 'Josh I', email: 'josh@mail.com' },
-    { id: 2, name: 'David O', email: 'david@mail.com' },
-    { id: 3, name: 'Andrew N', email: 'vlad@mail.com' },
-  ];
+  @observable all = [];
+  @observable isLoading = false;
+
+  @action async fetchAll() {
+    this.isLoading = false;
+    const response = await fetch('https://kips.herokuapp.com/products');
+    const status = await response.status;
+
+    if (status === 200) {
+      this.all = await response.json();
+    }
+  }
 
   @action add(data) {
     const existing = this.all;
