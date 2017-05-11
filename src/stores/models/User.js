@@ -1,5 +1,4 @@
 import { observable, action } from 'mobx';
-import { withRouter } from 'react-router-dom';
 
 import Api from '../Helpers';
 
@@ -10,6 +9,7 @@ class User {
   @observable isLoading = false;
   @observable signedIn = false;
   @observable email = null;
+  @observable shouldRedirect = false;
 
   @action setIsLoading(status) { 
     this.isLoading = status;
@@ -20,6 +20,10 @@ class User {
     if (status && email) {
       this.email = email;
     }
+  }
+
+  @action setShouldRedirect(status) {
+    this.shouldRedirect = status;
   }
 
   signIn(email = null, password = null) {
@@ -43,6 +47,8 @@ class User {
       this.email = email;
       this.signedIn = true;
       this.isLoading = false;
+      this.setShouldRedirect(true);
+      
     } else {
       this.signOut();
     }
@@ -60,15 +66,14 @@ class User {
 
     if (status === 200) {
       const body = await response.json();
-      const { user } = body;
 
       localStorage.setItem('token', body.auth_token);
       localStorage.setItem('email', body.email);
 
       this.setIsLoading(false);
       this.setSignedIn(true, body.email);
-
-      withRouter( (history) => { history.push('/') } );
+      this.setShouldRedirect(true);
+      
     } else {
       console.log('error');
     }
@@ -93,7 +98,8 @@ class User {
     this.email = null;
     this.signedIn = false;
     this.isLoading = false;
-    withRouter( (history) => { history.push('/sign_in') } );
+    this.setShouldRedirect(true);
+    
   }
 }
 

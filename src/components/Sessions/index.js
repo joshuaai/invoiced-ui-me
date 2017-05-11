@@ -5,6 +5,7 @@ import './index.css';
 
 @inject('user') @observer
 class New extends React.Component {
+  
   submitForm = (e) => {
     e.preventDefault();
 
@@ -14,6 +15,7 @@ class New extends React.Component {
       this.email.value,
       this.password.value,
     );
+
   }
 
   render() {
