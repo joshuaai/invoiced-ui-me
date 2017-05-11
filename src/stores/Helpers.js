@@ -5,6 +5,16 @@ const headers = () => {
 
   h.append('Content-Type', 'application/json');
 
+  const session = {
+    email: localStorage.getItem('email'),
+    token: localStorage.getItem('auth_token'),
+  };
+
+  if (session.email && session.token) {
+    h.append('X-User-Email', session.email);
+    h.append('X-User-Token', session.auth_token);
+  }
+
   return h;
 };
 

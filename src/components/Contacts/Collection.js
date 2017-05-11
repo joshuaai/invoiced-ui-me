@@ -1,12 +1,12 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 
-import Nav from './Nav';
+import Nav from '../Layout';
 import Contact from './Contact';
 
 import './Collection.css';
 
-@observer(['contacts'])
+@inject('contacts') @observer
 class Collection extends React.Component {
   componentWillMount() {
     this.props.contacts.fetchAll();
@@ -41,11 +41,11 @@ class Collection extends React.Component {
     </div>;
 
   render() {
-    const { all, isLoading } = this.props.contacts;
+    const { all } = this.props.contacts;
 
     return (
       <div id='Collection'>
-        <Nav />
+        <Nav.Application />
         {this.newContact()}
         <div className='pure-g'>
           {all.slice().map(info =>

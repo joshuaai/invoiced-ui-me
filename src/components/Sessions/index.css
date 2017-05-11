@@ -1,0 +1,16 @@
+.signInForm form {
+  width: 30em;
+  margin-top: 3em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.signInForm input {
+  margin-bottom: 1em !important;
+}
+
+.signInButton {
+  margin-top: 1em;
+  background: teal;
+  color: white;
+}

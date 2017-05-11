@@ -2,33 +2,28 @@ import 'purecss/build/pure.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'mobx-react';
+import stores from './stores';
 
-import Layout from './components/Layout';
-import Collection from './components/Collection';
-import Show from './components/Show'
+import c from './components';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
-import { Provider } from 'mobx-react';
-
-import stores from './stores'
 
 const Root = () => {
   return (
     <div>
       <Switch>
-        <Route exact path='/' component={Layout} />
-        <Switch>
-          <Route exact path='/contacts' component={Collection} />
-          <Route path='/contacts/:contactId' component={Show} />
-        </Switch>
+        <Route exact path='/' component={c.Layout.Application} />
+        <Route path='/sign_in' component={c.Sessions.New} />
+        <Route exact path='/contacts' component={c.Contacts.Collection} />
+        <Route path='/contacts/:contactId' component={c.Contacts.Show} />
       </Switch>
     </div>
   )
 }
 
 ReactDOM.render(
-  <Provider contacts={stores.contacts}>
+  <Provider {...stores}>
     <Router><Root /></Router>
   </Provider>, 
   document.getElementById('root')

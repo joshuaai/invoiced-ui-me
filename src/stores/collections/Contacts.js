@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 
-import Api from './Helpers';
+import Api from '../Helpers';
 
 class Contacts {
   path = '/products';
